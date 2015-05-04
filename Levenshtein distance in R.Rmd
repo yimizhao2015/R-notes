@@ -1,0 +1,74 @@
+---
+title: "Levenshtein distance in R"
+output: html_document
+---
+
+###INTRODUCTION
+The Levenshtein Distance algorithm is an algorithm used to calculate the minimum number of edits required to transform one string into another string using addition, deletion, and substitution of characters.
+
+###USES
+The most common use of the function is for approximate string matching. Since the function returns the minimum number of edits required to transform one string into another, the user can set the threshhold at which one string is considered a match to another.
+
+There are several ways to implement Levenshtein Distance algorithm in R.
+
+
+### (1) R default adist() 
+```{r}
+#compute Levenshtein distance
+strs<-c("smith","smit","smoth","snith","snoth")
+
+#using R default adist() 
+adist(strs,"smith")
+```
+
+### (2) stringdist() from package "stringdist"
+  * Currently, the above distance metrics are supported by stringdist.
+      + osa: Optimal string aligment, (restricted Damerau-Levenshtein distance).
+      + lv: Levenshtein distance (as in R’s native adis.t)
+      + dl: Full Damerau-Levenshtein distance.
+      + hamming: Hamming distance (a and b must have same nr of characters).
+      + lcs: Longest common substring distance.
+      + qgram: q-gram distance.
+      + cosine: cosine distance between q-gram profiles
+      + jaccard: Jaccard distance between q-gram profiles
+      + jw: Jaro, or Jaro-Winker distance.
+      + soundex: Distance based on soundex encoding.
+
+```{r message=FALSE}
+# using stringdist() from package "stringdist"
+library(stringdist)
+stringdist("smith",strs,method="lv")
+```
+###(3) strcmp from package "RecordLinkage"
+* Functions for computation of the similarity between two strings. <br>
+    + jarowinkler(str1, str2, W_1=1/3, W_2=1/3, W_3=1/3, r=0.5)
+    + levenshteinSim(str1, str2)
+    + levenshteinDist(str1, str2)
+
+```{r message=FALSE}
+library(RecordLinkage)
+# compute Levenshtein distance
+levenshteinDist("smith", strs)
+# compute the similarity
+levenshteinSim("smith", strs)
+```
+
+###(4) stringDist() from package "Biostrings"
+Computes the Levenshtein edit distance or pairwise alignment score matrix for a set of strings.<br>
+method could be One of "levenshtein", "hamming", "quality", or "substitutionMatrix".
+
+```{r message=FALSE}
+library(Biostrings)
+stringDist(strs,method="levenshtein")
+```
+
+### References:
+* Levenshtein Approximate String Matching(http://bytes.com/topic/access/insights/909002-levenshtein-approximate-string-matching)
+* The stringdist package(http://www.r-bloggers.com/the-stringdist-package/)
+* Biostrings(http://www.bioconductor.org/packages/release/bioc/html/Biostrings.html)
+* stringdist(http://cran.r-project.org/web/packages/stringdist/index.html)
+* RecordLinkage(http://cran.r-project.org/web/packages/RecordLinkage/index.html)
+
+ 
+
+
