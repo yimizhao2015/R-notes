@@ -1,0 +1,70 @@
+---
+title: "Readind XML into R"
+author: "Yimi Zhao"
+date: "Tuesday, May 05, 2015"
+output: html_document
+---
+
+## Simple Tutorial for Readind XML into R
+
+If you want to know more about XML and XPath, check the following tutorials:
+
+   * XML Tutorial <http://www.w3schools.com/xml>
+   * XPath Tutorial <http://www.w3schools.com/xpath>
+
+### In R, we apply "XML" package to read XML files
+```{r, message=FALSE}
+#install the package
+# install.packages("XML")
+library(XML)
+
+fileUrl<-"http://www.w3schools.com/xml/cd_catalog.xml"
+(doc<-xmlTreeParse(fileUrl,useInternal=T))
+```
+
+### Check the imported XML file:
+
+```{r}
+# check the xml file
+rootNode<-xmlRoot(doc)
+xmlName(rootNode) # root element name
+length(names(rootNode))
+```
+```{r}
+rootNode[[1]]
+rootNode[[1]][[1]]
+
+```
+
+### Using xmlSAaaply() to extract element values through XPath syntax:
+
+```{r}
+# extract values through XPath
+xmlSApply(rootNode,xmlValue)
+
+TITLE<-xpathSApply(rootNode,"//TITLE",xmlValue)
+ARTIST<-xpathSApply(rootNode,"//ARTIST",xmlValue)
+COUNTRY<-xpathSApply(rootNode,"//COUNTRY",xmlValue)
+#COMPANY<-xpathSApply(rootNode,"//COMPANY",xmlValue)
+PRICE<-xpathSApply(rootNode,"//PRICE",xmlValue)
+YEAR<-xpathSApply(rootNode,"//YEAR",xmlValue)
+
+```
+
+### Create a data frame based on extracted values we got from the XML file:
+
+```{r}
+# merge into a new data frame
+CD_catalog<-data.frame(TITLE, ARTIST, COUNTRY, PRICE, YEAR)
+dim(CD_catalog)
+CD_catalog
+
+```
+
+### Finally, we can  write the tidy data-framed data into a csv file:
+
+```{r}
+#export the tidy data into a csv file
+ #write(CD_catalog,"CD_catalog.csv")
+```
+
