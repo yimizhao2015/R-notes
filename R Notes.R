@@ -72,7 +72,6 @@ dat %>% mutate_at(c("coa", "male", "age"), as.factor)
 data[c("size", "id", "weight")] #by column name
 data[, c(1,3,2)]#by index
 
-
  #unique rows
 unique(dt)
 dt[!duplicated(dt),]
